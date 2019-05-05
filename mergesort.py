@@ -1,6 +1,7 @@
 # Michael O'Regan 09/April/2019
 # http://interactivepython.org/courselib/static/pythonds/SortSearch/TheMergeSort.html
-
+def mergeSort(alist):
+    print("Splitting ",alist)
     if len(alist)>1:
         mid = len(alist)//2
         lefthalf = alist[:mid]
