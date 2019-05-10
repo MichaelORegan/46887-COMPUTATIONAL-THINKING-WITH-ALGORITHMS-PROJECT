@@ -1,9 +1,9 @@
 # Michael O'Regan 05/May/2019
-# http://interactivepython.org/courselib/static/pythonds/SortSearch/TheMergeSort.html
+# http://interactivepython.org/runestone/static/pythonds/SortSearch/TheheapSort.html
 
 import time
 import statistics
-import numpy as np                              # importing numpy as np
+import numpy as np  # importing numpy as np
 
 np.random.seed(1)                                # seeding random on seed 1 so that all the arrays are the same
 
@@ -21,43 +21,36 @@ k = np.random.randint(200000, size=20000)        # array of size 20000
 l = np.random.randint(200000, size=30000)        # array of size 30000
 m = np.random.randint(200000, size=50000)        # array of size 50000
 
-def mergeSort(alist):
-    if len(alist)>1:
-        mid = len(alist)//2
-        lefthalf = alist[:mid]
-        righthalf = alist[mid:]
-
-        mergeSort(lefthalf)
-        mergeSort(righthalf)
-
-        i=0
-        j=0
-        k=0
-        while i < len(lefthalf) and j < len(righthalf):
-            if lefthalf[i] < righthalf[j]:
-                alist[k]=lefthalf[i]
-                i=i+1
-            else:
-                alist[k]=righthalf[j]
-                j=j+1
-            k=k+1
-
-        while i < len(lefthalf):
-            alist[k]=lefthalf[i]
-            i=i+1
-            k=k+1
-
-        while j < len(righthalf):
-            alist[k]=righthalf[j]
-            j=j+1
-            k=k+1
+def heapify(alist, n, i):
+    # Find largest among root and children
+    largest = i
+    l = 2 * i + 1
+    r = 2 * i + 2 
+    if l < n and alist[i] < alist[l]:
+        largest = l
+    if r < n and alist[largest] < alist[r]:
+        largest = r
+    # If root is not largest, swap with largest and continue heapifying
+    if largest != i:
+        alist[i],alist[largest] = alist[largest],alist[i]
+        heapify(alist, n, largest)
+def heapSort(alist):
+    n = len(alist)
+    # Build max heap
+    for i in range(n, 0, -1):
+        heapify(alist, n, i)
+    for i in range(n-1, 0, -1):
+        # swap
+        alist[i], alist[0] = alist[0], alist[i]  
+        #heapify root element
+        heapify(alist, i, 0)
 
 num_runs = 10                                       # set the benchamrk number of runs at 10
 for r in range(num_runs):                           # looping the timing of the algorithm for num_runs
     np.random.seed(1)                               # setting the random seed (1)
     a = np.random.randint(200000, size=100)         # array of size 100
     start_time = time.time_ns()                     # setting start time to the time now in nanoseconds, https://docs.python.org/3/library/time.html#time.time
-    mergeSort(a)                                   # calling algorithm for array a
+    heapSort(a)                                   # calling algorithm for array a
     end_time = time.time_ns()                       # setting end time to the time now in nanoseconds
     time_elapsed = (end_time - start_time)*10**-6   # setting time elapsed to the difference of start and end to get the length of the running time of the algorithm
     resultsa = []                                   # setting results a to an empty array to fill with results
@@ -67,7 +60,7 @@ for r in range(num_runs):
     np.random.seed(1)
     b = np.random.randint(200000, size=250)          # array of size 250
     start_time = time.time_ns()
-    mergeSort(b)                                    # calling algorithm for array b
+    heapSort(b)                                    # calling algorithm for array b
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsb = []
@@ -77,7 +70,7 @@ for r in range(num_runs):
     np.random.seed(1)
     c = np.random.randint(200000, size=500)          # array of size 500
     start_time = time.time_ns()
-    mergeSort(c)                                    # calling algorithm for array c
+    heapSort(c)                                    # calling algorithm for array c
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsc = []
@@ -87,7 +80,7 @@ for r in range(num_runs):
     np.random.seed(1)
     d = np.random.randint(200000, size=750)          # array of size 750
     start_time = time.time_ns()
-    mergeSort(d)                                    # calling algorithm for array d
+    heapSort(d)                                    # calling algorithm for array d
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsd = []
@@ -97,7 +90,7 @@ for r in range(num_runs):
     np.random.seed(1)
     e = np.random.randint(200000, size=1000)         # array of size 1000
     start_time = time.time_ns()
-    mergeSort(e)                                    # calling algorithm for array e
+    heapSort(e)                                    # calling algorithm for array e
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultse = []
@@ -107,7 +100,7 @@ for r in range(num_runs):
     np.random.seed(1)
     f = np.random.randint(200000, size=2500)         # array of size 2500
     start_time = time.time_ns()
-    mergeSort(f)                                    # calling algorithm for array f
+    heapSort(f)                                    # calling algorithm for array f
     end_time = time.time_ns()
     resultsf = []
     time_elapsed = (end_time - start_time)*10**-6
@@ -117,7 +110,7 @@ for r in range(num_runs):
     np.random.seed(1)
     g = np.random.randint(200000, size=5000)         # array of size 5000
     start_time = time.time_ns()
-    mergeSort(g)                                    # calling algorithm for array g
+    heapSort(g)                                    # calling algorithm for array g
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsg = []
@@ -127,7 +120,7 @@ for r in range(num_runs):
     np.random.seed(1)
     h = np.random.randint(200000, size=7500)         # array of size 7500
     start_time = time.time_ns()
-    mergeSort(h)                                    # calling algorithm for array h
+    heapSort(h)                                    # calling algorithm for array h
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsh = []
@@ -137,7 +130,7 @@ for r in range(num_runs):
     np.random.seed(1)
     i = np.random.randint(200000, size=10000)        # array of size 10000
     start_time = time.time_ns()
-    mergeSort(i)                                    # calling algorithm for array i
+    heapSort(i)                                    # calling algorithm for array i
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsi = []
@@ -147,7 +140,7 @@ for r in range(num_runs):
     np.random.seed(1)
     j = np.random.randint(200000, size=15000)        # array of size 15000
     start_time = time.time_ns()
-    mergeSort(j)                                    # calling algorithm for array j
+    heapSort(j)                                    # calling algorithm for array j
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsj = []
@@ -157,7 +150,7 @@ for r in range(num_runs):
     np.random.seed(1)
     k = np.random.randint(200000, size=20000)        # array of size 20000
     start_time = time.time_ns()
-    mergeSort(k)                                    # calling algorithm for array k
+    heapSort(k)                                    # calling algorithm for array k
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsk = []
@@ -167,7 +160,7 @@ for r in range(num_runs):
     np.random.seed(1)
     l = np.random.randint(200000, size=30000)        # array of size 30000
     start_time = time.time_ns()
-    mergeSort(l)                                    # calling algorithm for array l
+    heapSort(l)                                    # calling algorithm for array l
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsl = []
@@ -177,11 +170,11 @@ for r in range(num_runs):
     np.random.seed(1)
     m = np.random.randint(200000, size=50000)        # array of size 50000
     start_time = time.time_ns()
-    mergeSort(m)                                    # calling algorithm for array m
+    heapSort(m)                                    # calling algorithm for array m
     end_time = time.time_ns()
     time_elapsed = (end_time - start_time)*10**-6
     resultsm = []
     resultsm.append(time_elapsed)
 rm = round(statistics.mean(resultsm),3)              # setting rl to the mean of results rounded to 3 decimal places
 
-mergebench = [ra, rb, rc, rd, re, rf, rg, rh, ri, rj, rk, rl, rm] # setting mergebench to an array of the results of timings for sorting arrays a-m
+heapbench = [ra, rb, rc, rd, re, rf, rg, rh, ri, rj, rk, rl, rm] # setting heapbench to an array of the results of timings for sorting arrays a-m
